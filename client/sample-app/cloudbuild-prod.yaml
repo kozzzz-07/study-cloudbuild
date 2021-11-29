@@ -1,0 +1,20 @@
+steps:
+# https://cloud.google.com/sdk/gcloud/reference/run/deploy
+- id: Deploy
+  name: "gcr.io/cloud-builders/gcloud"
+  args: 
+    - 'run'
+    - 'deploy'
+    - 'cd-sample-client-prod'
+    - '--image'
+    - 'asia-northeast1-docker.pkg.dev/$PROJECT_ID/cd-sample/client-app:latest'
+    - '--region'
+    - 'asia-northeast1'
+    - '--port'
+    - '8080'
+    - '--ingress'
+    - 'internal-and-cloud-load-balancing'
+    - '--allow-unauthenticated'
+    - '--tag=v${SHORT_SHA}'
+
+tags: ['prod']
