@@ -1,0 +1,38 @@
+steps:
+# - id: Build
+#   name: 'gcr.io/cloud-builders/docker'
+#   args:
+#     - 'build'
+#     - '-t'
+#     - 'asia-northeast1-docker.pkg.dev/$PROJECT_ID/cd-sample/server-app:$SHORT_SHA'
+#     - '-t'
+#     - 'asia-northeast1-docker.pkg.dev/$PROJECT_ID/cd-sample/server-app:latest'
+#     - '--cache-from'
+#     - 'asia-northeast1-docker.pkg.dev/$PROJECT_ID/cd-sample/server-app:latest'
+#     - './server'
+#   env: 
+#     - 'SHORT_SHA=$SHORT_SHA'
+
+# - id: Push
+#   name: 'gcr.io/cloud-builders/docker'
+#   args: ['push', 'asia-northeast1-docker.pkg.dev/$PROJECT_ID/cd-sample/server-app']
+
+# https://cloud.google.com/sdk/gcloud/reference/run/deploy
+- id: Deploy
+  name: "gcr.io/cloud-builders/gcloud"
+  args: 
+    - 'run'
+    - 'deploy'
+    - 'cd-sample'
+    - '--image'
+    - 'asia-northeast1-docker.pkg.dev/$PROJECT_ID/cd-sample/server-app:latest'
+    - '--region'
+    - 'asia-northeast1'
+    - '--port'
+    - '80'
+    - '--ingress'
+    - 'internal-and-cloud-load-balancing'
+    - '--allow-unauthenticated'
+    - '--tag=v${SHORT_SHA}'
+
+tags: ['prod']
